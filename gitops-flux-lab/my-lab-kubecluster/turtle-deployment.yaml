@@ -1,0 +1,29 @@
+# Kubernetes Deployment Manifest file: turtle-deployment.yml
+# Author: Tan Yeong Chai
+# Revision Date: 20-Dec-2022
+# Description: This is a lab exercise for the "Kubernetes and Cloud Native Exam" course conducted by A Cloud Guru, which illustrates GitOps with Flux.
+# The lab aims to illustrate that after the newly created deployment manifest file being pushed over to this GitHub repository and tracked by Flux,
+# Flux should automatically spin up a Kubernetes deployment with 3 nginx replica pod within a local Kubernetes Cluster.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: turtle-deployment
+  namespace: default
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: turtle-nginx-deployment
+      type: turtle-flux-gitops-lab
+  template:
+    metadata:
+      namespace: default
+      labels:
+        app: turtle-nginx-deployment
+        type: turtle-flux-gitops-lab
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:stable
